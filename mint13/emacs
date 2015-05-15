@@ -1,0 +1,105 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; start package.el with eamcs
+(when (load (expand-file-name "~/.emacs.d/package.el"))) ;; important
+(require 'package)
+(add-to-list 'package-archives
+	     '("melpa" . "http://melpa.org/packages/") t)
+(when (< emacs-major-version 24)
+  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+(package-initialize) 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
+ '(column-number-mode t)
+ '(custom-enabled-themes (quote (deep-blue)))
+ '(python-shell-interpreter "python")
+ '(tool-bar-mode nil))
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ )
+(add-to-list 'default-frame-alist '(font . "Monospace-13"))
+(setq TeX-PDF-mode t)
+(setq inhibit-startup-message t)
+(global-linum-mode t)
+
+;; auctex setup
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
+(add-hook 'LaTeX-mode-hook 'visual-line-mode)
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(setq reftex-plug-into-AUCTeX t)
+
+(add-hook 'c-mode-common-hook
+  (lambda() 
+    (local-set-key  (kbd "C-c o") 'ff-find-other-file)))
+
+(setq comment-style 'multi-line)
+
+;; mail-mode setup
+(add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
+(add-hook 'mail-mode-hook          'turn-on-auto-fill)
+(add-hook 'mail-mode-hook          'mail-abbrevs-setup)
+(add-hook 'mail-mode-hook          'flyspell-mode)
+(setq mail-yank-prefix "> "
+            mail-signature "\n\n-- \nhttp://www.emacswiki.org/cgi-bin/wiki/AlexSchroeder"
+	          mail-default-headers "FCC: ~/SENT\n")
+
+;; c++ comment style setup
+(add-hook 'c++-mode-hook (lambda () (setq comment-start "/* "  comment-end " */")))
+
+;; matlab mode setup
+ (autoload 'matlab-mode "matlab" "Matlab Editing Mode" t)
+ (add-to-list
+  'auto-mode-alist
+  '("\\.m$" . matlab-mode))
+ (setq matlab-indent-function t)
+ (setq matlab-shell-command "matlab")
+(add-hook 'matlab-mode-hook 'auto-complete-mode)
+
+;; line/column number
+(setq line-number-mode t)
+(setq column-number-mode t)
+
+;; enable copy/paste from/to emacs
+(setq x-select-enable-clipboard t)
+
+;; enable flyspell in HTML
+(add-hook 'html-mode-hook 'flyspell-mode)
+
+;; enable auto-complete 
+;;(require 'auto-complete)
+;;(require 'auto-complete-config)
+;;(ac-config-default)
+(global-auto-complete-mode t)
+(add-to-list 'ac-modes 'matlab-mode)
+(add-to-list 'ac-modes 'makefile-gmake-mode)
+
+;; enable yasnippet
+(require 'yasnippet)
+(yas-global-mode 1)
+
+;; set the c/c++ indent to be 4
+(setq-default c-basic-offset 4)
+
+;; force GUI Emacs to load .bashrc
+(defun set-exec-path-from-shell-PATH ()
+  (let ((path-from-shell (replace-regexp-in-string
+                          "[ \t\n]*$"
+                          ""
+                          (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+    (setenv "PATH" path-from-shell)
+    (setq eshell-path-env path-from-shell) ; for eshell users
+    (setq exec-path (split-string path-from-shell path-separator))))
+
+(when window-system (set-exec-path-from-shell-PATH))
