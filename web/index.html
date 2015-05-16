@@ -1,12 +1,126 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Computer Configuration</title>
-</head>
-<body>
+  <head>
+    <title>Computer Configuration</title>
+  </head>
 
-<h1> Emacs configuration </h1>
-<p>This is a paragraph.</p>
+  <body>
+    
+    <h1> Emacs configuration </h1>
+    My experience is only limited to emacs24 or above. Since 
+    emacs24 takes package.el with itself, that is why I choose
+    it instead of previous editions.
+    <dl>
+      <dt><b style="background-color:red">
+	  Set the <i>elpa</i> resource websites
+      </b></dt>
+      <dd> 
+	choose all of these three : <br>
+	<code><pre style="color:green">
+	    ;; set the package connection websites
+	    (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+	    ("marmalade" . "https://marmalade-repo.org/packages/")
+	    ("melpa" . "http://melpa.org/packages/")))
+	</pre><code>
+      </dd>
+     
+      <dt><b style="background-color:red">
+	  Set <i>mode</i> search directories
+      </b></dt>
+      <dd> 
+	Set one folder and all its subfolders. <br>
+	<code><pre style="color:green">
+	    ;; set the package search path
+	    (let ((default-directory "~/.emacs.d/elpa/"))
+	    (normal-top-level-add-subdirs-to-load-path ))
+	</pre><code>
+      </dd>
 
-</body>
+      <dt><b style="background-color:red">
+	  Force emacs to read PATH variable
+      </b></dt>
+      <dd>
+	It took me a lot of time to figure it out. Finally, I installed
+	<i>exec-path-from-shell</i>. <br>
+	<code><pre style="color:green">
+	    ;; force GUI to read $PATH
+	    (require 'exec-path-from-shell)
+	    (exec-path-from-shell-copy-env "PATH")
+	</pre></code>
+      </dd>
+
+      <dt><b style="background-color:red">
+	  Aesthetic part
+      </b></dt>
+      <dd>
+	<code><pre style="color:green">
+	    ;; some simple configuration
+	    (setq inhibit-startup-message t) ;;forbid welcome screen 
+	    (tool-bar-mode -1) ;; forbid too bar
+	    (require 'color-theme) ;; set up color theme
+	    (color-theme-initialize) 
+	    (color-theme-deep-blue) 
+	    (setq line-number-mode t) ;; set row number
+	    (setq column-number-mode t) ;; enable column number
+	    (add-to-list 'default-frame-alist 
+	    '(font . "Monospace-13")) ;; set the default font
+
+	    ;; enable copy/paste from/to emacs
+	    (setq x-select-enable-clipboard t)	    
+	</pre></code>
+      </dd>
+    </dl>
+    
+    The above is the first part of this configuration. Now we need
+    to set the configuration for each individual file format.
+    <dl>
+      <dt><b style="background-color:blue">
+	  Yasnippet : the god 
+      </b></dt>
+      <dd>
+	<code><pre style="color:green">
+	    ;; add yasnippet
+	    (require 'yasnippet)
+	    (yas-global-mode -1)
+	</pre></code>
+      </dd>
+
+      <dt><b style="background-color:blue">
+	  auto-complete 
+      </b></dt>
+      <dd>
+	<code><pre style="color:green">
+	    ;; set up auto-complete
+	    (require 'auto-complete)
+	    (require 'auto-complete-config)
+	    (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+	    (ac-config-default)
+	</pre></code>
+      </dd>
+      
+      <dt><b style="background-color:blue">
+	  Python
+      </b></dt>
+      <dd>
+	Python environment setup is a little complicated.<br>
+	First, install python-mode.<br>
+	Then, install jedi.el for code completion. Note,
+	jedi require a lot of prerequisite packages and
+	it should be able to load these exec tools.
+	<code><pre style="color:green">
+	    ;; set up Python Envirenment
+	    (require 'ipython)
+	    (autoload 'python-mode "python-mode" "Python Mode." t)
+	    (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+	    (add-to-list 'interpreter-mode-alist '("python" . python-mode))
+	    ;; use jedi auto completion
+	    (add-hook 'python-mode-hook 'jedi:setup)
+	    (setq jedi:complete-on-dot t)
+	</pre></code>
+      </dd>
+    </dl>
+
+
+    
+  </body>
 </html>
