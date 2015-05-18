@@ -120,7 +120,34 @@
       </dd>
     </dl>
 
+    <h1> C/C++ related </h1>
+    <h3> General rules/procedure</h3>
+    <ol>
+      <li>Good book : C++ primer; effective C++. </li>
+      <li>Good editor : Emacs </li>
+      <li>Debug tool : <br><br>
+	<i>Valgrind</i> : mainly used for memory fault debugging, which is 
+	the first step. Whenever you encounter segmentation fault,
+	you probably should consider using it. <br>
+	PS: recently, fftw3 tortured me a lot, there are a few pieces of 
+	heap memory needed be freed by fftw_cleanup(). I was not 
+	aware of this at the beginning. <br>
+	PSS: for pthread multi-thread programs, helgrind helps a lot.
+	<code>
+	  valgrind --tool=helgrind ./a.out
+	</code>
+	<br><br>
+	<i>gdb</i>: not need to say much about this famous tool. It helps
+	you track each step in your code. If necessary, writing a
+	script will save a lot of time.<br><br>
+      </li>
+      <li>Profile tool : locate the Achilles heel of your
+	program => try to find ways to make it faster.
+	Of cause, the best way is to produce a performance diagram,
+	which utilizes <i style="color:red" >gprof2dot</i> 
+	and <i style="color:red">dot</i>. <br>
+      </li>
+    </ol>
 
-    
   </body>
 </html>
