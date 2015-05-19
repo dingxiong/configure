@@ -146,7 +146,53 @@
 	Of cause, the best way is to produce a performance diagram,
 	which utilizes <i style="color:red" >gprof2dot</i> 
 	and <i style="color:red">dot</i>. <br>
+	<code style="color:green">
+	  gprof path/to/your/executable | python gprof2dot.py 
+	  | dot -Tpng -o output.png
+	</code><br>
+	BE CAREFUL : compiler flag <i style="color:red">-pg</i> will
+	result memory leak.
       </li>
+      <li>
+	binding tool : for many scientific programs, it is 
+	necessary to import C++ to python/Matlab ( actually,
+	python+numpy is the trend ). Therefore, there is a
+	necessity to know something about binding. <br>
+	<b>Matlab</b>: it uses Mex files. Although it claims support
+	for C++, but from the examples it provides, it just transfer
+	C++ classes to C functions and wrap C functions instead.	
+	<br>
+	<b>Python</b>: I tried <i style="color:red">Ctypes</i>, 
+	it is not convenient. Also, 
+	it only supports C interface. Then I tried 
+	<i style="color:red">Boost.Python</i>. Though the initial
+	learning curves is slow, the effort pays eventually.	
+      </li>
+    </ol>
+
+    <h3> Specific skills</h3>
+    
+    <ol>
+      <li><p>
+	  <b>Selective compilation</b>: &nbsp&nbsp&nbsp&nbsp
+	  /*...*/ can only be used to comment out a block if there is
+	  no /**/ inside. So in order to compile selectively, you 
+	  basically have 2 choices. First, use 
+	  <i style="color:green">#if 0 ... #endif</i>. The second
+	  is to use <i style="color:green"> switch case </i>, and
+	  put the case blocks inside curly bracket.
+      </p></li>
+
+      <li><p>
+	  <b> processor time measure</b>: &nbsp&nbsp&nbsp&nbsp
+	  <code style="color:green"> clock_t clock(void); </code>
+	  returns the processor time consumed by the program. The
+	  value returned is expressed in clock ticks. <br>
+	  The counterpart in Python is 
+	  <code style="color:green"> time.clock()</code>, but the
+	  unit is different.
+      </p></li>
+
     </ol>
 
   </body>
