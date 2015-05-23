@@ -170,6 +170,9 @@
       </li>
     </ol>
 
+    <h3> Makefile</h3>
+    
+
     <h3> Specific skills</h3>
     
     <ol>
@@ -193,7 +196,66 @@
 	  unit is different.
       </p></li>
 
+      <li><p>
+	  <b> hold program in VS2008</b>: &nbsp&nbsp&nbsp&nbsp
+	  <code style="color:green"> system("pause"); </code>
+	  can achieve this effect. Remember to add header file
+	  <code style="color:green"> windows.h</code>.
+      </p></li>
+
     </ol>
 
+    <h1>Python related</h1>
+    <h3>Ipython notebook</h3>
+    Ipython notebook remote server should be easieat way to share your
+    code and idea with other people, which is very important for doing
+    research. <br><br>
+
+    Here, I descript how it works on Linux and Windows.
+
+    <h4>1. Linux</h4>
+
+    The official webside describes the easiest way: <br>
+    <code>
+      https://ipython.org/ipython-doc/dev/notebook/public_server.html
+    </code><br>
+    but it does not work for me.  Neverthertheless, I followed the instruction
+    there to set up the nbserver configuration file.
+    [ Password: my password to log onto Mint ]
+    so I took another way to do it : ssh <br>
+    start the notebook server on Mint, and then on another computer (client), 
+    and then set up port forwarding :
+    <br><code>
+      local_user@local_host$ ssh -N -f -Llocalhost:8888:localhost:9999 remote_user@remote_host      
+    </code><br>
+
+    <h4>2. Windows</h4>
+
+    Putty : in the SSH -> Tunnels, fill out a forwarded port.
+    Note 'Destination' is the server. Then log into remote server.
+    <br>
+    In the browser, type https://localhost:9999 
+    Now you can work at home.
+
+    <h3>odds and ends</h3>
+    
+    <ol>
+      <li> <b>02/15/2015</b><br>
+	matplotlib.pyplot.ion() starts the "interactive plotting mode"，
+	which can be loaded in ipython_config.py. NICE !
+      </li>
+      <li>
+	Recently, I find that int in numpy.array  is default int64, not
+	int32. SHOCKED.
+      </li>
+      <li> <b>09/12/2014</b><br>
+	The ebuid of gentoo sci-libs/scipy-0.12.1 has bug,
+	such that it fails to extract the correct blas library name,
+	namely, the mkl library name is totally wrong. That guy definitely
+	copy Numpy's ebuild but omitted the last line. <br>
+	Keep in mind when updating system.
+      </li>
+    </ol>
+    
   </body>
 </html>
