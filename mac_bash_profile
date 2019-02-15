@@ -46,7 +46,7 @@ config_sync() {
   cp ~/.bash_profile $CONF_LOC/mac_bash_profile
 }
 alias vimlinux="vim $CONF_LOC/linux_setup.sh"
-alias get_linux_setup="echo curl https://raw.githubusercontent.com/dingxiong/configure/master/linux_setup.sh && chmod +x linux_setup.sh"
+alias get_linux_setup="echo 'curl https://raw.githubusercontent.com/dingxiong/configure/master/linux_setup.sh > linux_setup.sh && chmod +x linux_setup.sh'"
 
 box_names='ebert-canary ebert-backfill siskel-test siskel-canary knight-test knight-mutation-publisher-test'
 for name in $box_names; do
