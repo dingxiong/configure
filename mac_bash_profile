@@ -43,11 +43,10 @@ export monami_jar=$PROJ/monami/service/build/libs/service-all.jar
 export CONF_LOC=~/00git/configure
 config_sync() {
 	# target=${1#.} # remove possible dot symbol at the begin. See Shell-Parameter-Expansion tutorial
-	case $1 in
-		bas*) cp ~/.bash_profile $CONF_LOC/mac_bash_profile
-	esac
+  cp ~/.bash_profile $CONF_LOC/mac_bash_profile
 }
 alias vimlinux="vim $CONF_LOC/linux_setup.sh"
+alias get_linux_setup="echo curl https://raw.githubusercontent.com/dingxiong/configure/master/linux_setup.sh && chmod +x linux_setup.sh"
 
 box_names='ebert-canary ebert-backfill siskel-test siskel-canary knight-test knight-mutation-publisher-test'
 for name in $box_names; do
@@ -55,7 +54,7 @@ for name in $box_names; do
 	alias ssh_${name//-/_}="ssh \$${name//-/_}" # define the ssh command
 done
 
-boxes=(saturn=i-072669edc6681a4de ebert_shared=i-0528c3d342ba20ffa ebert_test=i-06854fbd7e614a675 ebert_staging=i-00cf667ca1f785443 oyster_task_runner=i-04ff7d4c20e9ff0a7 oyster_testing_task_runner=i-05912ded954e456c2)
+boxes=(saturn=i-072669edc6681a4de ebert_shared=i-0528c3d342ba20ffa ebert_test=i-06854fbd7e614a675 ebert_staging=i-00cf667ca1f785443 oyster_task_runner=i-04ff7d4c20e9ff0a7 oyster_testing_task_runner=i-05912ded954e456c2 tensorflow_training=i-04b3612eb27c2666b)
 for entry in ${boxes[@]}; do
     arr=(${entry//=/ }) # replace '=' with ' ' and parentheses makes it an array
     name=${arr[0]}; box=${arr[1]}
