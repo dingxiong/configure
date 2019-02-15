@@ -39,12 +39,15 @@ export siskel_jar=$PROJ/siskel/build/libs/siskel-all.jar
 export knight_jar=$PROJ/knight/service/build/libs/service-all.jar
 export monami_jar=$PROJ/monami/service/build/libs/service-all.jar
 
+# sync config related
+export CONF_LOC=~/00git/configure
 config_sync() {
 	# target=${1#.} # remove possible dot symbol at the begin. See Shell-Parameter-Expansion tutorial
 	case $1 in
-		bas*) cp ~/.bash_profile ~/00git/configure/mac_bash_profile
+		bas*) cp ~/.bash_profile $CONF_LOC/mac_bash_profile
 	esac
 }
+alias vimlinux="vim $CONF_LOC/linux_setup.sh"
 
 box_names='ebert-canary ebert-backfill siskel-test siskel-canary knight-test knight-mutation-publisher-test'
 for name in $box_names; do
@@ -74,6 +77,7 @@ gt() {
 	esac
 	case $1 in
 		i-*) ssh $target ;;
+		con*) cd $CONF_LOC ;;
 		*) cd $REPO/$target ;;
 	esac
 }
