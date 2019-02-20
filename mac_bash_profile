@@ -122,6 +122,10 @@ sync_siskel() {
     rsync -avz $siskel_jar xiong_ding@$box:/home/xiong_ding/
 }
 
+sync_tensor() {
+	rsync -avz $PROJ/search/ranking/model/scripts/bonehead_lite/ xiong_ding@$tensorflow_training:/home/xiong_ding/bonehead_lite/
+}
+
 port_forwarding() {
     port=; box=
     case $1 in
