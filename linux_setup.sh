@@ -109,5 +109,10 @@ alias sbr='source ~/.bashrc'
 alias link_$SERVICE_NAME='sudo ln -sf ~/$JAR /srv/$SERVICE_NAME/lib/current'
 alias link_${SERVICE_NAME}_back='sudo ln -sf /srv/$SERVICE_NAME/lib/next /srv/$SERVICE_NAME/lib/current'
 alias log_${SERVICE_NAME}='tail -F /etc/sv/$SERVICE_NAME/log/current'
-alias restart_${SERVICE_NAME}='sudo service $SERVICE_NAME restart' 
+alias restart_${SERVICE_NAME}='sudo service $SERVICE_NAME restart'
+
+export RANK_FOLDER=~/tmp/ranking_spark/
+alias cdrank='cd $RANK_FOLDER'
+alias logrank='tail -F ~/tmp/ranking_spark/pipeline.log'
+
 EOF
