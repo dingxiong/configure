@@ -96,6 +96,9 @@ cat << 'EOF' >> ~/.bashrc
 alias ls='ls --color=auto'
 alias ll='ls -alFh'
 alias la='ls -A'
+
+s3cat() { aws s3 cp --quiet $1 /dev/stdout ; }
+
 # main editor
 export EDITOR="vim"
 # set the bash prompts
