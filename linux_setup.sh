@@ -98,6 +98,7 @@ alias ll='ls -alFh'
 alias la='ls -A'
 
 s3cat() { aws s3 cp --quiet $1 /dev/stdout ; }
+yarn_status() { yarn --config /etc/emr/search-relevance-prod/hadoop/conf application -status $1 ; }
 
 # main editor
 export EDITOR="vim"
