@@ -16,6 +16,8 @@ alias sbr='source ~/.bash_profile'
 alias vv='vim ~/.vimrc'
 alias gg='git grep -n'
 alias gf='git ls-files'
+alias gitlog='git log --graph --decorate --pretty=oneline --abbrev-commit'
+git_squash() { git rebase -i HEAD~$1 ; }
 
 # grep colorful output
 export GREP_OPTIONS="--color"
@@ -39,6 +41,8 @@ export siskel_jar=$PROJ/siskel/build/libs/siskel-all.jar
 export knight_jar=$PROJ/knight/service/build/libs/service-all.jar
 export monami_jar=$PROJ/monami/service/build/libs/service-all.jar
 
+alias ssh_tunnel='ssh -NfqD localhost:8527 xiong_ding@gw1.silver.musta.ch'
+
 # sync config related
 export CONF_LOC=~/00git/configure
 config_sync() {
@@ -54,6 +58,12 @@ for name in $box_names; do
 	alias ssh_${name//-/_}="ssh \$${name//-/_}" # define the ssh command
 done
 
+# set shogun test boxes
+for i in $(seq 30); do
+  printf -v box 'shogun-test-%02d' "$i"
+  alias ssh_${box//-/_}="ssh $box.aws.airbnb.com"
+done
+
 boxes=(saturn=i-072669edc6681a4de ebert_shared=i-0528c3d342ba20ffa ebert_test=i-06854fbd7e614a675 ebert_staging=i-00cf667ca1f785443 oyster_task_runner=i-04ff7d4c20e9ff0a7 oyster_testing_task_runner=i-05912ded954e456c2 tensorflow_training=i-04b3612eb27c2666b)
 for entry in ${boxes[@]}; do
     arr=(${entry//=/ }) # replace '=' with ' ' and parentheses makes it an array
@@ -63,8 +73,10 @@ for entry in ${boxes[@]}; do
 done
 
 alias ssh_next='ssh rc-next.musta.ch'
+export gw=gw1.silver.musta.ch
+alias ssh_gw='ssh gw1.silver.musta.ch'
 
-gt() { 
+gt() {
 	target=
 	case $1 in
 			rep*) target= ;;
@@ -89,6 +101,7 @@ alias cdrepo='cd $REPO'
 sc() { npm run -s sanity-check -- $1; }
 cp2jar() { cp $1 $ABNB/../jars ; }
 optica_hostnames() { optica role=$1 .hostname ; }
+echojson() { echo "$1" | jq '.' ; }
 
 sync_ebert() {
     box=
@@ -97,11 +110,11 @@ sync_ebert() {
         sta*) box=$ebert_staging ;;
         can*) box=$ebert_canary ;;
         sha*) box=$ebert_shared ;;
-        bac*) box=$ebert_backfill ;;             
+        bac*) box=$ebert_backfill ;;
         sat*) box=$saturn ;;
     esac
 
-    folder= 
+    folder=
     case $1 in
         sat*) folder="/home/xiong_ding/libs/ebert.jar" ;;
         *) folder="/home/xiong_ding/" ;;
@@ -126,6 +139,11 @@ sync_tensor() {
 	rsync -avz $PROJ/search/ranking/model/scripts/bonehead_lite/ xiong_ding@$tensorflow_training:/home/xiong_ding/bonehead_lite/
 }
 
+sync_gw() {
+	file=$1
+	rsync -avz $REPO/data/scripts/spark_streaming/airstream/conf/$file xiong_ding@$gw:/home/xiong_ding
+}
+
 port_forwarding() {
     port=; box=
     case $1 in
@@ -133,7 +151,7 @@ port_forwarding() {
         sta*) port=4435; box=$ebert_staging ;;
         can*) port=4434; box=$ebert_canary ;;
     esac
-    ssh -L $port:localhost:$port $box -o UserKnownHostsFile=/dev/null  
+    ssh -L $port:localhost:$port $box -o UserKnownHostsFile=/dev/null
 }
 
 alias sync_oyster_testing_task_runner='cd $PROJ/oyster/impl/oyster-helixtask && gradlew shadowJar && rsync -avz build/libs/oyster-task-runner-all.jar xiong_ding@$oyster_testing_task_runner:/home/xiong_ding/'
