@@ -13,7 +13,7 @@ NAME=$1
 SERVICE=${NAME%-*}
 ENVI=${NAME##*-}
 
-if [ "$ENVI" == "test" ]; then
+if [[ $ENVI == test && $SERVICE == ebert ]]; then
     JAR=${SERVICE}-all.jar
     SERVICE_NAME=$NAME
 else 
@@ -21,7 +21,7 @@ else
     SERVICE_NAME=$SERVICE
 fi
 
-if [ "$SERVICE" == "knight-mutation-publisher" ]; then
+if [[ $SERVICE == knight-mutation-publisher ]]; then
     JAR=mutation-publisher-all.jar
 fi
 
@@ -97,6 +97,8 @@ alias ls='ls --color=auto'
 alias ll='ls -alFh'
 alias la='ls -A'
 
+export SERVICE_NAME=place_holder_1
+
 s3cat() { aws s3 cp --quiet $1 /dev/stdout ; }
 yarn_status() { yarn --config /etc/emr/search-relevance-prod/hadoop/conf application -status $1 ; }
 
@@ -117,3 +119,6 @@ alias cdrank='cd $RANK_FOLDER'
 alias logrank='tail -F ~/tmp/ranking_spark/pipeline.log'
 
 EOF
+
+# cat cann't substiute variables
+sed -i "s/place_holder_1/$SERVICE_NAME/g" ~/.bashrc
