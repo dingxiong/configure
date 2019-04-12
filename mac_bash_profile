@@ -58,12 +58,6 @@ for name in $box_names; do
 	alias ssh_${name//-/_}="ssh \$${name//-/_}" # define the ssh command
 done
 
-# set shogun test boxes
-for i in $(seq 30); do
-  printf -v box 'shogun-test-%02d' "$i"
-  alias ssh_${box//-/_}="ssh $box.aws.airbnb.com"
-done
-
 boxes=(saturn=i-072669edc6681a4de ebert_shared=i-0528c3d342ba20ffa ebert_test=i-06854fbd7e614a675 ebert_staging=i-00cf667ca1f785443 oyster_task_runner=i-04ff7d4c20e9ff0a7 oyster_testing_task_runner=i-05912ded954e456c2 tensorflow_training=i-04b3612eb27c2666b)
 for entry in ${boxes[@]}; do
     arr=(${entry//=/ }) # replace '=' with ' ' and parentheses makes it an array
@@ -84,10 +78,23 @@ gt() {
 			air*) target=airbnb ;;
 			ebe*) target=treehouse/projects/ebert ;;
 			i-*) target=$1.inst.aws.airbnb.com ;;
+      shu*)
+        printf -v box 'shogun-test-%02d' "$2"
+        target=$box.aws.airbnb.com
+        ;;
+      sam*)
+        if [[ $# = 3 ]]; then
+          group=$3
+        else
+          group=1
+        fi
+        printf -v box 'samurai-test-%02d-group-%d' "$2" "$group"
+        target=$box.aws.airbnb.com
+        ;;
 			*) target=$1 ;;
 	esac
 	case $1 in
-		i-*) ssh $target ;;
+		i-*|shu*|sam*) ssh $target ;;
 		con*) cd $CONF_LOC ;;
 		*) cd $REPO/$target ;;
 	esac
