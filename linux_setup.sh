@@ -116,7 +116,8 @@ alias restart_${SERVICE_NAME}='sudo service $SERVICE_NAME restart'
 
 export RANK_FOLDER=~/tmp/ranking_spark/
 alias cdrank='cd $RANK_FOLDER'
-alias logrank='tail -F ~/tmp/ranking_spark/pipeline.log'
+joblog() { tail -F ~/tmp/ranking_spark/pipeline_$1.log ; }
+jobtail() { tail -n $1 ~/tmp/ranking_spark/pipeline_$2.log | less -M +Gg ; }
 
 EOF
 
