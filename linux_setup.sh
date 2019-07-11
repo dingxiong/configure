@@ -114,10 +114,21 @@ alias link_${SERVICE_NAME}_back='sudo ln -sf /srv/$SERVICE_NAME/lib/next /srv/$S
 alias log_${SERVICE_NAME}='tail -F /etc/sv/$SERVICE_NAME/log/current'
 alias restart_${SERVICE_NAME}='sudo service $SERVICE_NAME restart'
 
+# for search ranking
 export RANK_FOLDER=~/tmp/ranking_spark/
 alias cdrank='cd $RANK_FOLDER'
 joblog() { tail -F ~/tmp/ranking_spark/pipeline_$1.log ; }
 jobtail() { tail -n $1 ~/tmp/ranking_spark/pipeline_$2.log | less -M +Gg ; }
+
+spark_logs() { yarn --config /etc/emr/search-relevance-prod/hadoop/conf logs -applicationId $1 ; }
+spark_status() { yarn --config /etc/emr/search-relevance-prod/hadoop/conf application -status $1 ; }
+spark_cancel() {
+    read -p "Do you wish to cancel application ${1} ? [y/n]" yn
+    case $yn in
+        [Yy]* ) yarn --config /etc/emr/search-relevance-prod/hadoop/conf application -kill $1 ; break;;
+        * ) echo "non-op.";;
+    esac
+}
 
 EOF
 
