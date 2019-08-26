@@ -125,7 +125,7 @@ spark_status() { yarn --config /etc/emr/search-relevance-prod/hadoop/conf applic
 spark_cancel() {
     read -p "Do you wish to cancel application ${1} ? [y/n]" yn
     case $yn in
-        [Yy]* ) yarn --config /etc/emr/search-relevance-prod/hadoop/conf application -kill $1 ; break;;
+        [Yy]* ) yarn --config /etc/emr/search-relevance-prod/hadoop/conf application -kill $1 ;;
         * ) echo "non-op.";;
     esac
 }
