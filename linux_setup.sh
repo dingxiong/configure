@@ -32,7 +32,11 @@ cat << 'EOF' >> ~/.inputrc
 "\e[A": history-search-backward
 "\e[B": history-search-forward
 set show-all-if-ambiguous on
-set completion-ignore-case on"
+set completion-ignore-case on
+
+# Ctrl+Left/Right to move by whole words.
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
 EOF
 
 ################################################################################
